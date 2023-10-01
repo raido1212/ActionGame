@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UniRx;
+using Cysharp.Threading.Tasks;
 using UniRx.Triggers;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GoalPresenter : MonoBehaviour
 {
@@ -22,6 +25,7 @@ public class GoalPresenter : MonoBehaviour
             .Subscribe(_ =>
             {
                 view();
+                EndInGame().Forget();
             }).AddTo(this);
     }
 
@@ -35,4 +39,11 @@ public class GoalPresenter : MonoBehaviour
     {
         
     }
+
+    async UniTaskVoid EndInGame()
+    {
+        await UniTask.Delay(TimeSpan.FromSeconds(3));
+        SceneManager.LoadScene("Title");
+    }
+    
 }
